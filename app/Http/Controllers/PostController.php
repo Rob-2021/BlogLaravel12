@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -78,8 +79,18 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
             'excerpt' => 'nullable',
             'content' => 'nullable',
+            'image' => 'nullable|image',
             'is_published' => 'required|boolean',
         ]);
+
+        if ($request->hasFile('image')) {
+
+            if ($post->image_path) {
+                Storage::delete($post->image_path);
+            }
+
+            $data['image_path'] = Storage::put('posts', $request->image); 
+        }
 
         $post->update($data);
         session()->flash('swal', [
@@ -88,7 +99,7 @@ class PostController extends Controller
             'text' => 'El post ha sido actualizado correctamente',
         ]);
 
-        return redirect()->route('admin.posts.index', $post);
+        return redirect()->route('admin.posts.edit', $post);
     }
 
     /**

@@ -13,12 +13,27 @@
             </flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
-    <div class="card">
-        <form action="{{route('admin.posts.update', $post)}}" method="POST" class="space-y-4">
+    <form action="{{route('admin.posts.update', $post)}}" method="POST" enctype="multipart/form-data">
             
-            @csrf
-            @method('PUT')
+        @csrf
+        @method('PUT')
 
+        <div class="relative mb-2">
+
+            {{ Storage::url($post->image_path) }}
+
+            {{-- <img class="w-full aspect-video object-cover object-center" src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" alt=""> --}}
+            <img class="w-full aspect-video object-cover object-center" src="{{ $post->image_path ? Storage::url($post->image_path) : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"}}" alt="">
+
+            <div class="absolute top-8 right-8">
+                <label class="bg-white px-4 py-2 rounded-lg cursor-pointer">
+                    Cambiar imagen
+                    <input class="hidden" type="file" name="image" accept="image/*" >
+                </label>
+            </div>
+        </div>
+            
+        <div class="card" class="space-y-4">
             <flux:input name="title" label="Titulo" value="{{old('title', $post->title)}}" oninput="string_to_slug(this.value, '#slug')" placeholder="Escribe el titulo del post" class="mb-4"/>
 
             <flux:input name="slug" id="slug" label="Slug" value="{{old('slug', $post->slug)}}" placeholder="Escribe el slug del post" class="mb-4"/>
@@ -61,7 +76,7 @@
                     Enviar
                 </flux:button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
     
 </x-layouts.app>

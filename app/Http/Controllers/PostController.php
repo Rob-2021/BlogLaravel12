@@ -47,7 +47,7 @@ class PostController extends Controller
             'title' => 'Bien hecho!',
             'text' => 'El post ha sido creado correctamente',
         ]);
-        return redirect()->route('admin.posts.edit', $post);
+        return redirect()->route('admin.posts.index', $post);
     }
 
     /**

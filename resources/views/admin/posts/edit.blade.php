@@ -1,4 +1,11 @@
 <x-layouts.app>
+
+    @push('css')
+    {{-- Quill Editor --}}
+    <!-- Include stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    @endpush
+
     <flux:breadcrumbs class="mb-4">
             <flux:breadcrumbs.item :href="route('dashboard')">
                 Dashboard
@@ -51,9 +58,22 @@
                 {{ old('excerpt', $post->excerpt) }}
             </flux:textarea>
 
-            <flux:textarea label="Contenido" name="content"  rows="16">
+            {{-- <flux:textarea label="Contenido" name="content"  rows="16">
                 {{ old('content', $post->content) }}
-            </flux:textarea>
+            </flux:textarea> --}}
+
+            <div>
+
+                <p class="text-sm font-medium mb-1">
+                    Contenido
+                </p>
+
+                <div id="editor">{!! old('content', $post->content) !!}</div>
+
+                <textarea class="hidden" name="content" id="content">
+                    {{ old('content', $post->content) }}
+                </textarea>
+            </div>
 
             <div>
                 <p class="text-sm font-medium mb-1">
@@ -105,4 +125,20 @@
         </div>
     </form>
     
+    @push('js')
+        <!-- Include the Quill library -->
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+        <!-- Initialize Quill editor -->
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        quill.on('text-change', function(){
+            document.querySelector('#content').value = quill.root.innerHTML;
+        });
+    </script>
+    @endpush
+
 </x-layouts.app>

@@ -87,6 +87,10 @@ class PostController extends Controller
             'is_published' => 'required|boolean',
         ]);
 
+        if ($request->is_published && !$post->is_published) {
+            $data['published_at'] = now();
+        }
+
         if ($request->hasFile('image')) {
 
             if ($post->image_path) {
@@ -106,7 +110,7 @@ class PostController extends Controller
             'text' => 'El post ha sido actualizado correctamente',
         ]);
 
-        return redirect()->route('admin.posts.edit', $post);
+        return redirect()->route('admin.posts.index', $post);
     }
 
     /**
@@ -114,6 +118,16 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        if ($post->image_path) {
+            Storage::delete($post->image_path);
+        }
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => 'Post eliminado con exito!',
+            'text' => 'El post ha sido eliminado correctamente',
+        ]);
+
+        return redirect()->route('admin.posts.index');
     }
 }

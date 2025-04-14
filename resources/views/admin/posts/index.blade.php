@@ -77,5 +77,31 @@
     <div class="mt-4">
         {{$posts->links()}}
     </div>
+        
+    {{-- Alerta para confirmar la eliminacion de datos --}}
+    @push('js')
+        <script>
+            forms = document.querySelectorAll('.delete-form');
+
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "No podrás revertir esto!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit();
+                        }
+                    })
+                });
+            });
+        </script>
+    @endpush
 
 </x-layouts.app>

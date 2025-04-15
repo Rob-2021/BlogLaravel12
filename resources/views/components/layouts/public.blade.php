@@ -1,10 +1,10 @@
 @php
     $links = [
         [
-            'name' => 'Home',
+            'name' => 'Posts',
             'icon' => 'layout-grid',
-            'url' => route('home'),
-            'current' => request()->routeIs('home'),
+            'url' => route('posts.index'),
+            'current' => request()->routeIs('posts.*'),
         ],
     ];
 @endphp
@@ -138,15 +138,6 @@
 
             <flux:spacer />
 
-            {{-- <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist> --}}
         </flux:sidebar>
 
         <flux:main>

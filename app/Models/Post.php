@@ -6,6 +6,8 @@ use App\Observers\PostObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 
 // #[ObservedBy(PostObserver::class)]
 class Post extends Model
@@ -29,6 +31,19 @@ class Post extends Model
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->image_path ? Storage::url($this->image_path) : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg",
+        );
+    }
+
+    //Route Model Binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function tags()
     {

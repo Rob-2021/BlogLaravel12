@@ -30,7 +30,7 @@
             {{ Storage::url($post->image_path) }}
 
             {{-- <img class="w-full aspect-video object-cover object-center" src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" alt=""> --}}
-            <img id="imgPreview" class="aspect-video object-cover object-center" width="600" height="600" src="{{ $post->image_path ? Storage::url($post->image_path) : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"}}" alt="">
+            <img id="imgPreview" class="aspect-video object-cover object-center" width="600" height="600" src="{{ $post->image }}" alt="">
 
             <div class="absolute top-8 right-8">
                 <label class="bg-white px-4 py-2 rounded-lg cursor-pointer">

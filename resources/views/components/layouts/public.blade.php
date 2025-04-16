@@ -2,11 +2,20 @@
     $links = [
         [
             'name' => 'Posts',
-            'icon' => 'layout-grid',
+            'icon' => 'newspaper',
             'url' => route('posts.index'),
             'current' => request()->routeIs('posts.*'),
         ],
     ];
+
+    if(auth()->check()) {
+        $links[] = [
+            'name' => 'Dashboard',
+            'icon' => 'layout-grid',
+            'url' => route('dashboard'),
+            'current' => request()->routeIs('dashboard'),
+        ];
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -58,15 +67,13 @@
                         class="cursor-pointer"
                         :initials="auth()->user()->initials()"
                     />
-
                     <flux:menu>
                         <flux:menu.radio.group>
                             <div class="p-0 text-sm font-normal">
                                 <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                                     <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
                                         <span
-                                            class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white"
-                                        >
+                                            class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                                             {{ auth()->user()->initials() }}
                                         </span>
                                     </span>
@@ -130,9 +137,14 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')">
-                    <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
+                    <flux:navlist.item icon="newspaper" :href="route('posts.index')" :current="request()->routeIs('posts.*')" wire:navigate>
+                        {{ __('Posts') }}
                     </flux:navlist.item>
+                    @auth
+                        <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                            {{ __('Dashboard') }}
+                        </flux:navlist.item>
+                    @endauth
                 </flux:navlist.group>
             </flux:navlist>
 
